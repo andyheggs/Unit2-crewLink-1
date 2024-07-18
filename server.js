@@ -12,14 +12,16 @@ const session = require('express-session');
 const MongoStore = require("connect-mongo");
 
 const isSignedIn = require("./middleware/is-signed-in.js");
+const passUserToView = require('./middleware/pass-user-to-view.js');
 
 const applicationsController = require('./controllers/applications.js');
 
+const authController = require("./controllers/auth.js");
 
 // Set the port from environment variable or default to 3000
 const port = process.env.PORT ? process.env.PORT : "3000";
 
-const authController = require("./controllers/auth.js");
+
 
 mongoose.connect(process.env.MONGODB_URI);
 
@@ -46,14 +48,25 @@ app.use(session({
   }),
 }));
 
-app.get("/", (req, res) => {
-  res.render("index.ejs", {
-    user: req.session.user,
-  });
-}); 
+app.use(passUserToView); 
 
-app.use("/auth", authController);  
-app.use('/users/applications', applicationsController); // New!
+app.get('/', (req, res) => {
+  
+  if (req.session.user) {
+    
+    res.redirect(`/users/${req.session.user._id}/applications`);
+    
+  } else {
+    
+    res.render('index.ejs');
+  }
+});
+
+app.use('/auth', authController);
+
+app.use(isSignedIn);
+
+app.use('/users/:userId/applications', applicationsController);
 
 app.listen(port, () => {
   console.log(`The express app is ready on port ${port}!`);
