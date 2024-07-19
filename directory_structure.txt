@@ -1,0 +1,32 @@
+.
+├── controllers
+│   ├── applications.js
+│   └── auth.js
+├── directory_structure.txt
+├── middleware
+│   ├── is-signed-in.js
+│   └── pass-user-to-view.js
+├── models
+│   └── user.js
+├── package-lock.json
+├── package.json
+├── public
+│   └── stylesheets
+│       ├── partials.css
+│       ├── show.css
+│       └── style.css
+├── server.js
+└── views
+    ├── applications
+    │   ├── edit.ejs
+    │   ├── index.ejs
+    │   ├── new.ejs
+    │   └── show.ejs
+    ├── auth
+    │   ├── sign-in.ejs
+    │   └── sign-up.ejs
+    ├── index.ejs
+    └── partials
+        └── _navbar.ejs
+
+9 directories, 20 files
